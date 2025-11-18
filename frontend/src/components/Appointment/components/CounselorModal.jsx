@@ -37,8 +37,8 @@ export const CounselorModal = ({
   };
 
   const removeImage = () => {
-    setImagePreview("/placeholder-user.jpg");
-    onInputChange("profilePic", "/placeholder-user.jpg");
+    setImagePreview("/avatar.png");
+    onInputChange("profilePic", "/avatar.png");
   };
 
   const handleSubmit = (e) => {
@@ -239,9 +239,33 @@ export const CounselorModal = ({
               <label className="label">
                 <span className="label-text">Profile Picture</span>
               </label>
-
+                  {imagePreview && (
+                    <div className="avatar justify-center">
+                      <div className="w-24 h-24 rounded-full">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          onError={(e) => {
+                            e.target.src = "/avatar.png";
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}  
+                  <div className="flex items-center gap-4 justify-center">
+                    {imagePreview &&
+                      imagePreview !== "/avatar.png" && (
+                        <button
+                          type="button"
+                          onClick={removeImage}
+                          className="btn btn-ghost btn-sm btn-circle"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                  </div>                              
               {/* Upload Method Toggle */}
-              <div className="tabs tabs-boxed mb-3">
+              <div className="tabs tabs-boxed mb-3 justify-center">
                 <button
                   type="button"
                   className={`tab ${
@@ -266,26 +290,7 @@ export const CounselorModal = ({
               {uploadMethod === "upload" ? (
                 <div className="space-y-3">
                   {/* Image Preview */}
-                  <div className="flex items-center gap-4">
-                    <div className="avatar">
-                      <div className="w-24 h-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                        <img
-                          src={imagePreview || "/placeholder-user.jpg"}
-                          alt="Preview"
-                        />
-                      </div>
-                    </div>
-                    {imagePreview &&
-                      imagePreview !== "/placeholder-user.jpg" && (
-                        <button
-                          type="button"
-                          onClick={removeImage}
-                          className="btn btn-ghost btn-sm btn-circle"
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                      )}
-                  </div>
+
 
                   {/* File Input */}
                   <input
@@ -305,29 +310,16 @@ export const CounselorModal = ({
                     className="input input-bordered w-full"
                     placeholder="https://example.com/image.jpg"
                     value={
-                      formData.profilePic === "/placeholder-user.jpg"
+                      formData.profilePic === "/avatar.png"
                         ? ""
                         : formData.profilePic
                     }
                     onChange={(e) => {
-                      const url = e.target.value || "/placeholder-user.jpg";
+                      const url = e.target.value || "/avatar.png";
                       onInputChange("profilePic", url);
                       setImagePreview(url);
                     }}
                   />
-                  {imagePreview && (
-                    <div className="avatar">
-                      <div className="w-24 h-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                        <img
-                          src={imagePreview}
-                          alt="Preview"
-                          onError={(e) => {
-                            e.target.src = "/placeholder-user.jpg";
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )}
                 </div>
               )}
             </div>
